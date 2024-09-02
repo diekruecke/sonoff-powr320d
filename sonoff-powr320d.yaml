@@ -168,16 +168,16 @@ binary_sensor:
   - platform: template
     name: $friendly_name Load
     id: load_on
-    lambda: |-
-      if (isnan(id(w_sensor).state)) {
-        return {};
-      } else if (id(w_sensor).state > 4) {
-        // Running
-        return true;
-      } else {
-        // Not running
-        return false;
-      }
+    # lambda: |-
+    #   if (isnan(id(w_sensor).state)) {
+    #     return {};
+    #   } else if (id(w_sensor).state > 4) {
+    #     // Running
+    #     return true;
+    #   } else {
+    #     // Not running
+    #     return false;
+    #   }
 
 
 display:

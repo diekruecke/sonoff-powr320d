@@ -18,7 +18,7 @@ jobs:
     uses: esphome/workflows/.github/workflows/build.yml@main
     with:
       files: |
-        sonoff-powr320d.yaml
+        sonoff-powr320d.factory.yaml
       esphome-version: 2024.8.0
       combined-name: firmware
       release-summary: ${{ github.event_name == 'release' && github.event.release.body || '' }}

@@ -1,0 +1,32 @@
+
+# Enable Home Assistant API
+api:
+
+# HA Status Anzeige
+binary_sensor:
+  - platform: status
+    name: HA Verbindungstatus
+
+text_sensor:
+# HA ESPHomeVersions Anzeige
+  - platform: version
+    name: ESPHome Version
+    hide_timestamp: true
+  
+# HA WifiInfo Anzeige
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+    ssid:
+      name: Connected SSID
+
+button:
+  - platform: restart
+    name: Neustarten
+    disabled_by_default: true
+  - platform: factory_reset
+    name: Werkseinstellungen wiederherstellen
+    internal: true
+  - platform: safe_mode
+    name: In Safe Mode Starten
+    internal: true

@@ -1,0 +1,26 @@
+defaults:
+  domain_name: ".local"
+
+esphome:
+  name: $device_name
+  friendly_name: $friendly_name
+  # area: $device_area
+
+  name_add_mac_suffix: true
+
+web_server:
+  include_internal: true
+  local: false
+  version: 3
+
+logger:
+
+ota:
+  - platform: esphome
+  - platform: http_request
+
+wifi:
+  domain: $domain_name
+  ap:
+
+captive_portal:

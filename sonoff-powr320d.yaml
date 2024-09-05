@@ -1,13 +1,20 @@
 substitutions:
-  sensor_update_interval: 10s
   device_name: sonoff-powr320d
   friendly_name: Sonoff POWR320D
+  
+  domain_name: ".smarthome"
+
+  sensor_update_interval: 10s
+
+packages:
+  esphome_basis: !include includes/esphome_config.yaml
+  homeassistant: !include includes/homeassistant_config.yaml
 
 esphome:
-  name: sonoff-powr320d
-  friendly_name: $friendly_name
+  # name: sonoff-powr320d
+  # friendly_name: $friendly_name
 
-  name_add_mac_suffix: true
+  # name_add_mac_suffix: true
 
   on_boot: # Set the initial state of the template switch to the actual relay state. This will NOT change the state.
     priority: 250.0 # Wait until WiFi is connected to allow the sensor some time to settle
@@ -23,25 +30,25 @@ esphome:
 esp32:
   board: nodemcu-32s
 
-wifi:
-  domain: ".smarthome"
-  ap:
+# wifi:
+#   domain: ".smarthome"
+#   ap:
 
-captive_portal:
+# captive_portal:
 
-logger:
+# logger:
 
-web_server:
-  version: 2
+# web_server:
+#   version: 2
 
-api:
+# api:
 
 http_request:
   verify_ssl: false
 
-ota:
-  - platform: esphome
-  - platform: http_request
+# ota:
+#   - platform: esphome
+#   - platform: http_request
 
 update:
   - platform: http_request
@@ -62,40 +69,50 @@ time:
 sensor:
   - platform: cse7766
     current:
-      name: $friendly_name Current
+      name: Stromstärke
       id: a_sensor
       filters:
         - throttle_average: ${sensor_update_interval}
     voltage:
-      name: $friendly_name Voltage
+      name: Stromspannung
       id: v_sensor
       filters:
         - throttle_average: ${sensor_update_interval}
     power:
-      name: $friendly_name Power
+      name: Leistung
       id: w_sensor
       filters:
         - throttle_average: ${sensor_update_interval}
     energy:
-      name: $friendly_name Energy
+      name: Energie
       id: wh_sensor
       filters:
         - throttle_average: ${sensor_update_interval}
     power_factor:
-      name: $friendly_name Energy
+      name: Power Factor
       filters:
         - throttle_average: ${sensor_update_interval}
+    apparent_power:
+      name: Apparent Power
+      id: apparent_power
+      filters:
+        - throttle_average: $sensor_update_interval
 
   - platform: total_daily_energy
-    name: $friendly_name Total Daily Energy
+    name: Täglicher Verbrauch
     power_id: w_sensor
-    filters:
-      - multiply: 0.001
+    state_class: total_increasing
+    device_class: energy
+    restore: true
     unit_of_measurement: kWh
+    accuracy_decimals: 3
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
 
-  - platform: uptime
-    id: uptime_sensor
-    internal: True
+  # - platform: uptime
+  #   id: uptime_sensor
+  #   internal: True
 
   - platform: internal_temperature
     name: "ESP 32 Internal Temperature"
@@ -105,6 +122,7 @@ binary_sensor:
     pin: GPIO00
     id: reset
     internal: true
+    name: "Hauptschalter Button"
     filters:
       - invert:
       - delayed_off: 10ms
@@ -174,7 +192,7 @@ output:
 
 switch:
   - platform: template
-    name: $friendly_name
+    name: "Hauptschalter"
     optimistic: true
     id: relay_1
     turn_off_action:
@@ -201,8 +219,8 @@ switch:
       - switch.turn_off: relay_on  # bi-stable relay so no need to keep on
       - light.turn_on: switch_led
     interlock: [relay_off]
-  - platform: restart
-    name: $friendly_name Restart
+  # - platform: restart
+  #   name: $friendly_name Restart
 
 light:
   - platform: monochromatic

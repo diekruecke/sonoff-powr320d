@@ -7,6 +7,10 @@ binary_sensor:
   - platform: status
     name: HA Verbindungstatus
 
+sensor:
+  - platform: uptime
+    name: Uptime Sensor
+
 text_sensor:
 # HA ESPHomeVersions Anzeige
   - platform: version

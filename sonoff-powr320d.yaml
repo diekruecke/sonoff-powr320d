@@ -46,6 +46,7 @@ esp32:
 # api:
 
 http_request:
+  useragent: esphome/device
   # verify_ssl: false
 
 # ota:

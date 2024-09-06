@@ -29,6 +29,8 @@ esphome:
 
 esp32:
   board: nodemcu-32s
+  framework:
+    type: esp-idf
 
 # wifi:
 #   domain: ".smarthome"
@@ -44,7 +46,7 @@ esp32:
 # api:
 
 http_request:
-  verify_ssl: false
+  # verify_ssl: false
 
 # ota:
 #   - platform: esphome

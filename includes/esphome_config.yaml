@@ -10,7 +10,7 @@ esphome:
 
 web_server:
   include_internal: true
-  local: false
+  local: true
   version: 3
 
 logger:

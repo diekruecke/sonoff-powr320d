@@ -11,11 +11,6 @@ packages:
   homeassistant: !include includes/homeassistant_config.yaml
 
 esphome:
-  # name: sonoff-powr320d
-  # friendly_name: $friendly_name
-
-  # name_add_mac_suffix: true
-
   on_boot: # Set the initial state of the template switch to the actual relay state. This will NOT change the state.
     priority: 250.0 # Wait until WiFi is connected to allow the sensor some time to settle
     then:
@@ -32,26 +27,8 @@ esp32:
   framework:
     type: esp-idf
 
-# wifi:
-#   domain: ".smarthome"
-#   ap:
-
-# captive_portal:
-
-# logger:
-
-# web_server:
-#   version: 2
-
-# api:
-
 http_request:
   useragent: esphome/device
-  # verify_ssl: false
-
-# ota:
-#   - platform: esphome
-#   - platform: http_request
 
 update:
   - platform: http_request
@@ -121,10 +98,6 @@ sensor:
     filters:
       # Multiplication factor from W to kW is 0.001
       - multiply: 0.001
-
-  # - platform: uptime
-  #   id: uptime_sensor
-  #   internal: True
 
   - platform: internal_temperature
     name: "ESP 32 Internal Temperature"
@@ -207,10 +180,10 @@ switch:
     name: "Hauptschalter"
     optimistic: true
     id: relay_1
-    turn_off_action:
-      - switch.turn_on: relay_off
     turn_on_action:
       - switch.turn_on: relay_on
+    turn_off_action:
+      - switch.turn_on: relay_off
   - platform: gpio
     restore_mode: ALWAYS_OFF
     internal: true
@@ -231,8 +204,6 @@ switch:
       - switch.turn_off: relay_on  # bi-stable relay so no need to keep on
       - light.turn_on: switch_led
     interlock: [relay_off]
-  # - platform: restart
-  #   name: $friendly_name Restart
 
 light:
   - platform: monochromatic
@@ -256,3 +227,16 @@ interval:
           - light.turn_on: wifi_status_led
         else:
           - light.turn_off: wifi_status_led
+  - interval: 60s
+    then:
+      if:
+        condition:
+          binary_sensor.is_on: page
+        then:
+          binary_sensor.template.publish:
+            id: page
+            state: OFF
+        else:
+          binary_sensor.template.publish:
+            id: page
+            state: ON

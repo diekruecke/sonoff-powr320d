@@ -73,6 +73,7 @@ uart:
 time:
   - platform: homeassistant
     id: homeassistant_time
+    timezone: Europe/Berlin
 
 sensor:
   - platform: cse7766

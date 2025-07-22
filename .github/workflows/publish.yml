@@ -19,7 +19,7 @@ jobs:
     with:
       files: |
         sonoff-powr320d.factory.yaml
-      esphome-version: 2024.8.0
+      esphome-version: 2025.7.2
       combined-name: firmware
       release-summary: ${{ github.event_name == 'release' && github.event.release.body || '' }}
       release-url: ${{ github.event_name == 'release' && github.event.release.html_url || '' }}

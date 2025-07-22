@@ -132,7 +132,7 @@ binary_sensor:
 
   - platform: template # this is a fake sensor to tell the screen which info to show on display
     id: page
-    publish_initial_state: true
+    trigger_on_initial_state: true
     internal: true
   - platform: template
     name: $friendly_name Load
@@ -209,13 +209,13 @@ light:
   - platform: monochromatic
     id: switch_led
     output: led
-    internal: True
+    internal: true
   - platform: status_led
     id: wifi_status_led
-    internal: True
+    internal: true
     pin:
       number: GPIO05
-      inverted: True
+      inverted: true
 
 interval:
   - interval: 30s
